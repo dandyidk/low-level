@@ -1,4 +1,5 @@
 #include "MPU6050.h"
+#include "stdio.h"
 #define MPU6050_ADDR 0xD0
 
 #define SMPLRT_DIV_REG 0x19
@@ -19,8 +20,11 @@ void MPU6050_init(void)
 	uint8_t check,data;
 	HAL_StatusTypeDef ret;
 	HAL_I2C_Mem_Read(&hi2c1, MPU6050_ADDR, WHO_AM_I_REG, 1, &check, 1 , 1000);
-	if (check == 104)
-	{
+	if (check != 104){
+		printf("Imu not detected");
+		return;
+	}
+	else {
 		//Power management register write all 0's to wake up sensor
 		data = 0;
 		  ret=HAL_I2C_Mem_Write(&hi2c1,MPU6050_ADDR, PWR_MGMT_1_REG, 1, &data, 1, 100);
@@ -28,6 +32,7 @@ void MPU6050_init(void)
 		 			printf("Sensor is not awake");
 		 			return;
 		 		}
+		 HAL_Delay(10);
 		//Set data rate of 1KHz by writing SMPRT_DIV register
 		data = 0x07;
 		 ret=HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &data, 1, 100);

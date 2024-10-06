@@ -20,7 +20,7 @@
 #include "main.h"
 #include "stm32f1xx_hal.h"
 #include "MPU6050.h"
-
+#include "stdio.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -115,6 +115,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	  MPU6050_Read_Gyro(&gyroX,&gyroY,&gyroZ);
+	  HAL_Delay(10);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
